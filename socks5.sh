@@ -225,11 +225,7 @@ install() {
 	judge "安装 ss5 "
 }
 
-menu() {
     install
-        ;;
-    esac
-
 }
 
 
