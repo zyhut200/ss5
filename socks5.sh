@@ -226,5 +226,4 @@ install() {
 }
 
     install
-    
-menu
+   
