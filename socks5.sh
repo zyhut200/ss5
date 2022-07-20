@@ -225,75 +225,9 @@ install() {
 	judge "安装 ss5 "
 }
 
-del_ss5() {
-
-	systemctl stop sockd.service
-	rm -rf /usr/local/bin/socks
-	rm -rf /etc/systemd/system/sockd.service
-	systemctl daemon-reload
-	rm -rf /etc/socks
-	judge "删除 ss5 "
-}
-
-update_ss5() {
-	port_set
-        port_exist_check
-        user_set
-	rm -rf /etc/socks/config.yaml
-	config_install
-	systemctl restart sockd.service
-	connect
-
-}
-
-
-
 menu() {
-    echo -e "\t ss5 安装管理脚本 "
-    echo -e "\t---authored by zhangyu---"
-    echo -e "\thttps://www.zhangyu.ml"
-    echo -e "\tSystem Request:Debian 9+/Ubuntu 20.04+/Centos 7+"
-    echo -e "\t无法使用请联系TG @moneyfly1987\n"
-
-    echo -e "—————————————— 安装向导 ——————————————"
-    echo -e "${Green} 欢迎加入TG群@moneyflychat ${Font}"
-    echo -e "${Red} 欢迎加入TG群@moneyflychat${Font}"
-
-
-    echo -e "${Green} 接受特殊要求定制 ${Font}"
-    echo -e "${Red} 欢迎加入TG群@moneyflychat ${Font}"
-    echo -e "${Green}1.${Font}  安装ss5"
-    echo -e "${Green}2.${Font}  停止ss5"
-    echo -e "${Green}3.${Font}  删除ss5"
-    echo -e "${Green}4.${Font}  更改端口账户密码"
-    echo -e "${Green}5.${Font}  install BBR"
-    echo -e "${Green}99.${Font}  退出 \n"
-
-
-
-    read -rp "请输入数字：" menu_num
     case $menu_num in
-    1)
-        install
-        ;;
-    2)
-        systemctl stop sockd.service
-        judge "停止 ss5 "
-        ;;
-    3)
-        del_ss5
-        ;;
-    4)
-        update_ss5
-        ;;
-    5)
-        bbr_install
-        ;;
-    99)
-        exit 0
-        ;;
-    *)
-	echo -e "${RedBG}请输入正确的数字${Font}"
+    install
         ;;
     esac
 
