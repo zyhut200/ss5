@@ -226,7 +226,6 @@ install() {
 }
 
 menu() {
-    case $menu_num in
     install
         ;;
     esac
