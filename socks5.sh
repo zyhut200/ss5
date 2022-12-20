@@ -91,7 +91,7 @@ sic_optimization() {
 }
 
 port_set() {
-        port="11688"
+        port="26688"
 }
 
 port_exist_check() {
