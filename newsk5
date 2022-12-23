@@ -1,0 +1,4 @@
+apt-get update -y && apt-get install curl -y
+wget -q -N --no-check-certificate https://raw.githubusercontent.com/wyx176/nps-socks5/master/install.sh && chmod 777 install.sh && bash install.sh
+1
+y
