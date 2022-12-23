@@ -86,7 +86,7 @@ checkIp(){
 ipAdd=`curl http://ifconfig.info -s --connect-timeout 10`
 clear
 echo "当前ip地址："${ipAdd}
-read -p "如果不对请停止安装或者手动输入服务器ip：(y/n/ip)： " choice
+          y
 	
 	if [[ "$choice" == 'n' || "$choice" == 'N' ]]; then
 			echo "安装结束"
@@ -250,7 +250,7 @@ echo "5.卸载客户端"
 echo "6.全卸载"
 echo "0.退出"
 while :; do echo
-	read -p "请选择： " menuChoice
+	1
 	if [[ ! $menuChoice =~ ^[0-6]$ ]]; then
 		echo "输入错误! 请输入正确的数字!"
 	else
