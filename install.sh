@@ -251,8 +251,6 @@ echo "6.全卸载"
 echo "0.退出"
 while :; do echo
 	1
-	if [[ ! $menuChoice =~ ^[0-6]$ ]]; then
-		echo "输入错误! 请输入正确的数字!"
 	else
 		break	
 	fi
