@@ -251,7 +251,6 @@ echo "6.全卸载"
 echo "0.退出"
 while :; do echo
 	1
-	else
 		break	
 	fi
 done
