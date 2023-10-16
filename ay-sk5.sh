@@ -17,29 +17,45 @@ CONF="${FILE}/ay-sk5.conf"
 LOG="${FILE}/ay-sk5.log"
 
 do_start(){
-	while read line
+    if [ ! -f "${CONF}" ]; then
+        echo "配置文件不存在，请检查！"
+        exit 1
+    fi
+
+	while read -r line
     do
-        eval nohup $FILE/ay-sk5 $line >> "${LOG}" 2>&1 &
+        eval nohup "$FILE/ay-sk5" "$line" >> "${LOG}" 2>&1 &
     done < "${CONF}"
+    echo "${NAME} 已启动。"
 }
+
 do_stop(){
-    killall ay-sk5
+    pkill -f ay-sk5
+    echo "${NAME} 已停止。"
 }
+
 do_status(){
-    echo ""
+    if pgrep -f ay-sk5 > /dev/null; then
+        echo "${NAME} 正在运行。"
+    else
+        echo "${NAME} 已停止。"
+    fi
 }
 
 do_restart(){
-    echo ""
+    do_stop
+    sleep 2
+    do_start
+    echo "${NAME} 已重启。"
 }
 
 case "$1" in
-	start|stop|restart|status)
-	do_$1
-	;;
-	*)
-	echo -e "使用方法: $0 { start | stop | restart | status }"
-	RETVAL=1
-	;;
+    start|stop|restart|status)
+        do_$1
+        ;;
+    *)
+        echo -e "使用方法: $0 { start | stop | restart | status }"
+        RETVAL=1
+        ;;
 esac
 exit $RETVAL
