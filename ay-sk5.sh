@@ -1,52 +1,52 @@
 #!/bin/bash
 
 ### BEGIN INIT INFO
-# Provides:          Brook-pf
+# Provides:          Dante SOCKS5 Proxy
 # Required-Start:    $network $local_fs $remote_fs
 # Required-Stop:     $network $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Lightweight port forwarding tool
-# Description:       Start or stop the Brook-pf
+# Short-Description: Dante SOCKS5 Proxy
+# Description:       Start or stop the Dante SOCKS5 Proxy
 ### END INIT INFO
 
 NAME="ay-sk5"
-NAME_BIN="sk5"
-FILE="/usr/local/ay-sk5"
-CONF="${FILE}/ay-sk5.conf"
-LOG="${FILE}/ay-sk5.log"
+DAEMON="/usr/sbin/sockd"
+CONF="/etc/danted.conf"
+PIDFILE="/var/run/$NAME.pid"
+LOGFILE="/var/log/socks.log"
+
+[ -x $DAEMON ] || exit 0
 
 do_start(){
-    if [ ! -f "${CONF}" ]; then
-        echo "配置文件不存在，请检查！"
+    if [ ! -f $CONF ]; then
+        echo "Configuration file does not exist, please check!"
         exit 1
     fi
-
-	while read -r line
-    do
-        eval nohup "$FILE/ay-sk5" "$line" >> "${LOG}" 2>&1 &
-    done < "${CONF}"
-    echo "${NAME} 已启动。"
+    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- -D
+    echo "$NAME started."
 }
 
 do_stop(){
-    pkill -f ay-sk5
-    echo "${NAME} 已停止。"
+    start-stop-daemon --stop --quiet --pidfile $PIDFILE
+    echo "$NAME stopped."
 }
 
 do_status(){
-    if pgrep -f ay-sk5 > /dev/null; then
-        echo "${NAME} 正在运行。"
-    else
-        echo "${NAME} 已停止。"
-    fi
+    start-stop-daemon --status --quiet --pidfile $PIDFILE
+    case "$?" in
+        0) echo "$NAME is running." ;;
+        1) echo "$NAME is not running and the pid file exists." ;;
+        3) echo "$NAME is not running." ;;
+        4) echo "Unable to determine the status of $NAME." ;;
+    esac
 }
 
 do_restart(){
     do_stop
     sleep 2
     do_start
-    echo "${NAME} 已重启。"
+    echo "$NAME restarted."
 }
 
 case "$1" in
@@ -54,8 +54,7 @@ case "$1" in
         do_$1
         ;;
     *)
-        echo -e "使用方法: $0 { start | stop | restart | status }"
-        RETVAL=1
+        echo "Usage: $0 { start | stop | restart | status }"
+        exit 1
         ;;
 esac
-exit $RETVAL
